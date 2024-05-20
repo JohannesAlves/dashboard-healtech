@@ -1,0 +1,144 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "nome": "User 001",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Ativo"
+    },
+    {
+      "id": "2",
+      "nome": "User 002",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Inativo"
+    },
+    {
+      "id": "3",
+      "nome": "User 003",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Inativo"
+    },
+    {
+      "id": "4",
+      "nome": "User 004",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Inativo"
+    },
+    {
+      "id": "5",
+      "nome": "User 005",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Inativo"
+    },
+    {
+      "id": "6",
+      "nome": "User 006",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Ativo"
+    },
+    {
+      "id": "7",
+      "nome": "User 007",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Ativo"
+    },
+    {
+      "id": "8",
+      "nome": "User 008",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Inativo"
+    },
+    {
+      "id": "9",
+      "nome": "User 009",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Inativo"
+    },
+    {
+      "id": "10",
+      "nome": "User 010",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Inativo"
+    },
+    {
+      "id": "11",
+      "nome": "User 011",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Inativo"
+    },
+    {
+      "id": "12",
+      "nome": "User 012",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Ativo"
+    },
+    {
+      "id": "13",
+      "nome": "User 013",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Ativo"
+    },
+    {
+      "id": "14",
+      "nome": "User 014",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Ativo"
+    },
+    {
+      "id": "15",
+      "nome": "User 015",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Inativo"
+    },
+    {
+      "id": "16",
+      "nome": "User 016",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Inativo"
+    },
+    {
+      "id": "17",
+      "nome": "User 017",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Inativo"
+    },
+    {
+      "id": "18",
+      "nome": "User 018",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Inativo"
+    },
+    {
+      "id": "19",
+      "nome": "User 019",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Ativo"
+    },
+    {
+      "id": "20",
+      "nome": "User 020",
+      "telefone": "85911111111",
+      "data_de_cadastro": "01-01-2020",
+      "status": "Inativo"
+    }
+  ]
+}
