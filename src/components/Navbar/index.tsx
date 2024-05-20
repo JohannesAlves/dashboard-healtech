@@ -14,11 +14,13 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Divider, Grid } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 const pages = ['Clientes', 'Endereços', 'Entregas'];
 const settings = ['Logout'];
 
 const Navbar = () => {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('Clientes');
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -38,8 +40,6 @@ const Navbar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
-  console.log(activeTab);
 
   return (
     <AppBar
@@ -179,7 +179,12 @@ const Navbar = () => {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Typography
+                    textAlign="center"
+                    onClick={() => router.replace('/')}
+                  >
+                    {setting}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
