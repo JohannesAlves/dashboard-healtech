@@ -82,6 +82,11 @@ export default function Login() {
             Acesse sua conta para iniciar a sessão
           </Typography>
 
+          <Typography variant="subtitle1" mt={1} color={'#6A6A6A'}>
+            L: teste@email.com <br />
+            S: 1234
+          </Typography>
+
           <Box
             component="form"
             noValidate
