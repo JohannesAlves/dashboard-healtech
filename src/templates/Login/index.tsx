@@ -15,6 +15,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AuthContext } from '@/context/auth-context';
+import { useRouter } from 'next/navigation';
 
 // Schemas
 export const FormSchema = z.object({
@@ -39,6 +40,8 @@ export default function Login() {
     resolver: zodResolver(FormSchema),
   });
 
+  const router = useRouter();
+
   const onSubmit = (data: FormData) => {
     const user = handleLogin(data.email, data.password);
 
@@ -48,6 +51,8 @@ export default function Login() {
         message: 'Email ou senha incorretos.',
       });
     }
+
+    return router.replace('/list-users');
   };
 
   return (
