@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "server": "npx json-server -p 4000 db.json",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -14,6 +15,7 @@
     "@emotion/styled": "^11.11.5",
     "@hookform/resolvers": "^3.4.0",
     "@mui/material": "^5.15.18",
+    "@mui/x-data-grid": "^7.5.0",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "^15.0.7",
     "@types/jest": "^29.5.12",
