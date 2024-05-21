@@ -10,6 +10,7 @@ import Navbar from '@/components/Navbar';
 import {
   Box,
   Button,
+  FormControl,
   FormControlLabel,
   Grid,
   Menu,
@@ -28,7 +29,6 @@ const ListUsersTemplate = () => {
   const [users, setUsers] = useState<IUsers[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [orderBy, setOrderBy] = useState('id');
-  const [filter, setFilter] = useState('');
 
   const isOpen = !!anchorEl;
 
@@ -45,11 +45,35 @@ const ListUsersTemplate = () => {
     handleCloseMenuGroupBy();
   };
 
+  const handleSort = (sortByValue: string, users: IUsers[]) => {
+    const sortedUsers = users.sort((a, b) => {
+      switch (sortByValue) {
+        case 'id':
+          return Number(a.id) - Number(b.id);
+        case 'nome':
+          return a.nome.localeCompare(b.nome);
+        case 'status': // Ordenar por status (Ativo vem antes de Inativo)
+          if (a.status === 'Ativo' && b.status === 'Inativo') {
+            return -1;
+          } else if (a.status === 'Inativo' && b.status === 'Ativo') {
+            return 1;
+          } else {
+            return 0; // Mantém a ordem atual se ambos forem 'Ativo' ou 'Inativo'
+          }
+        default:
+          return Number(a.id) - Number(b.id);
+      }
+    });
+
+    return sortedUsers;
+  };
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const users = await getAllUsers();
-        setUsers(users);
+        const sortedUsers = handleSort(orderBy, users);
+        setUsers(sortedUsers);
       } catch (error) {
         console.error('Failed to fetch users:', error);
       }
@@ -132,72 +156,6 @@ const ListUsersTemplate = () => {
 
                 <FormControlLabel
                   value="data_de_cadastro"
-                  control={<Radio color="secondary" />}
-                  label="Data de cadastro"
-                />
-
-                <FormControlLabel
-                  value="status"
-                  control={<Radio color="secondary" />}
-                  label="Status"
-                />
-              </RadioGroup>
-            </Menu>
-          </div>
-
-          <div>
-            <Button
-              sx={{
-                fontSize: 16,
-                textTransform: 'none',
-                color: '#9747FF',
-              }}
-              id="basic-button"
-              aria-controls={isOpen ? 'basic-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={isOpen ? 'true' : undefined}
-              onClick={handleGroupByFilter}
-            >
-              Filtros{' '}
-              <Image
-                src={ExpandeMoreIcon}
-                width={20}
-                height={20}
-                alt="Expande more icon"
-              />
-            </Button>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={isOpen}
-              onClose={handleCloseMenuGroupBy}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button',
-              }}
-            >
-              <RadioGroup
-                sx={{ paddingLeft: 2, paddingRight: 10 }}
-                aria-labelledby="demo-radio-buttons-group-label"
-                name="radio-buttons-group"
-              >
-                <FormControlLabel
-                  value="id"
-                  control={<Radio color="secondary" />}
-                  label="ID"
-                />
-                <FormControlLabel
-                  value="name"
-                  control={<Radio color="secondary" />}
-                  label="Nome"
-                />
-                <FormControlLabel
-                  value="phone"
-                  control={<Radio color="secondary" />}
-                  label="Telefone"
-                />
-
-                <FormControlLabel
-                  value="date"
                   control={<Radio color="secondary" />}
                   label="Data de cadastro"
                 />
