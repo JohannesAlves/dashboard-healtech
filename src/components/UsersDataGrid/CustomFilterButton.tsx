@@ -10,11 +10,11 @@ const CustomFilterButton = () => {
 
   return (
     <Button
-      sx={{ textTransform: 'none' }}
+      sx={{ textTransform: 'none', fontSize: 15 }}
       color="secondary"
       onClick={handleClick}
     >
-      Filters
+      Filtros
     </Button>
   );
 };
