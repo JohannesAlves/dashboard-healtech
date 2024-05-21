@@ -51,7 +51,11 @@ const Navbar = () => {
         borderColor: '#EBEBEB',
       }}
     >
-      <Container maxWidth="xl">
+      <Container
+        sx={{
+          minWidth: '100%',
+        }}
+      >
         <Toolbar disableGutters>
           <Typography
             variant="h6"
@@ -60,6 +64,7 @@ const Navbar = () => {
             href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
+              ml: 2,
               display: { xs: 'none', md: 'flex' },
               fontWeight: 700,
               color: '#6A6A6A',
@@ -131,7 +136,7 @@ const Navbar = () => {
                     my: 2,
                     color: activeTab === page ? '#9747FF' : '#6A6A6A',
                     textTransform: 'none',
-                    fontSize: 14,
+                    fontSize: 15,
                   }}
                 >
                   {page}
