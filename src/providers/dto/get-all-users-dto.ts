@@ -3,5 +3,5 @@ export interface IUsers {
   nome: string;
   telefone?: string;
   data_de_cadastro?: string;
-  status: 'string';
+  status: string;
 }
