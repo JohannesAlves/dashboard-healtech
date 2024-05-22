@@ -43,7 +43,7 @@ const radios = [
 export const OrderBy: React.FC<IProps> = ({ value, setValue }) => {
   const { handeCloseMenu, handleSelectedMenu, isOpen, anchorEl } = useMenu();
 
-  const handleOrderByChange = (event: any) => {
+  const handleOrderByChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     handeCloseMenu();
   };

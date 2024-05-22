@@ -111,7 +111,11 @@ const Filter: React.FC<IProps> = ({
     <Grid container direction="row" spacing={2} sx={{ alignItems: 'center' }}>
       <Grid container direction="row" spacing={2} sx={{ alignItems: 'center' }}>
         <Grid item>
-          <Button color="warning" onClick={onRemove}>
+          <Button
+            color="warning"
+            onClick={onRemove}
+            data-testid="remove-button"
+          >
             <Image src={CloseIcon} width={35} height={35} alt="close icon" />
           </Button>
         </Grid>
@@ -122,7 +126,7 @@ const Filter: React.FC<IProps> = ({
               <InputLabel id="demo-simple-select-label">Comparator</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                id="select-comparator"
                 label="Comparator"
                 value={selectedComparator}
                 onChange={handleComparatorChange}
@@ -141,7 +145,7 @@ const Filter: React.FC<IProps> = ({
             <InputLabel id="demo-simple-select-label">Coluna</InputLabel>
             <Select
               labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              id="coluna-select"
               label="Coluna"
               value={selectedColumn?.field || ''}
               onChange={handleColumnChange}
