@@ -5,14 +5,14 @@
       "nome": "User 001",
       "telefone": "85911111111",
       "data_de_cadastro": "01-01-2020",
-      "status": "Ativo"
+      "status": "Inativo"
     },
     {
       "id": "2",
       "nome": "User 002",
       "telefone": "85911111111",
       "data_de_cadastro": "01-01-2020",
-      "status": "Ativo"
+      "status": "Inativo"
     },
     {
       "id": "3",

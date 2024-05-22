@@ -80,6 +80,7 @@ const ListUsersTemplate = () => {
   const [users, setUsers] = useState<IUsers[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [orderBy, setOrderBy] = useState('id');
+  const [userAction, setUserAction] = useState<IUsers | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<ISelectedFilters[]>(
     []
   );
@@ -177,7 +178,7 @@ const ListUsersTemplate = () => {
       };
 
       const response = await putUser(userFormatted.id, userFormatted);
-      console.log(response);
+      setUserAction(userFormatted); // Update state to trigger useEffect
     } catch (error) {
       return error;
     }
@@ -199,7 +200,7 @@ const ListUsersTemplate = () => {
       }
     };
     fetchUsers();
-  }, [orderBy, handleUser]);
+  }, [orderBy, userAction]);
 
   return (
     <Grid sx={{ backgroundColor: 'white', minHeight: '100vh' }}>
