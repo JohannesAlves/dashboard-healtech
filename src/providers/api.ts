@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:4000' || process.env.BACKEND_URL;
+const baseURL = process.env.BACKEND_URL || 'http://localhost:4000';
 
 const jsonServerApi = axios.create({
   baseURL,
