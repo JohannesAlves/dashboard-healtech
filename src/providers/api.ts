@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const baseURL = process.env.BACKEND_URL || 'http://localhost:4000';
+const baseURL =
+  process.env.IS_DEVELOPMENT === 'true'
+    ? 'http://localhost:4000'
+    : 'https://dashboard-api-cyan-delta.vercel.app/';
 
 const jsonServerApi = axios.create({
   baseURL,
