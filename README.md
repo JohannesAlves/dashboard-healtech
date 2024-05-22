@@ -2,6 +2,8 @@
 
 ## Links
 
+_É NECESSÁRIO ESTAR COM YARN SERVER EM EXECUÇÃO PARA TESTAR O DEPLOY_
+
 - [Deploy](https://dashboard-healtech.vercel.app)
 
 ## Instalação
