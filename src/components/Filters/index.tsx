@@ -1,13 +1,15 @@
 import { useMenu } from '@/hooks/use-menu';
 import { IUsers } from '@/providers/dto/get-all-users-dto';
 import { IColumn } from '@/templates/ListUsers/types';
-import { Button, Menu, Grid, Box } from '@mui/material';
+import { Button, Menu, Grid, Box, Badge } from '@mui/material';
 import React, { SetStateAction, useState } from 'react';
 import Filter from '../Filter';
 import { ISelectedFilters } from '@/templates/ListUsers';
 
 import ExpandeMoreIcon from '@/assets/expand_more.svg';
 import ExpandeLessIcon from '@/assets/expand_less.svg';
+import AddIcon from '@/assets/add.svg';
+import RemoveIcon from '@/assets/delete_forever.svg';
 
 import Image from 'next/image';
 
@@ -54,35 +56,44 @@ export const Filters: React.FC<IProps> = ({
 
   return (
     <div>
-      <Button
-        sx={{
-          fontSize: 16,
-          textTransform: 'none',
-          color: '#9747FF',
+      <Badge
+        badgeContent={selectedFilters.length}
+        color="secondary"
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
         }}
-        id="basic-button"
-        aria-controls={isOpen ? 'basic-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={isOpen ? 'true' : undefined}
-        onClick={handleSelectedMenu}
       >
-        Filtros{' '}
-        {isOpen ? (
-          <Image
-            src={ExpandeMoreIcon}
-            width={25}
-            height={25}
-            alt="expand more"
-          />
-        ) : (
-          <Image
-            src={ExpandeLessIcon}
-            width={25}
-            height={25}
-            alt="expand less"
-          />
-        )}
-      </Button>
+        <Button
+          sx={{
+            fontSize: 16,
+            textTransform: 'none',
+            color: '#9747FF',
+          }}
+          id="basic-button"
+          aria-controls={isOpen ? 'basic-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={isOpen ? 'true' : undefined}
+          onClick={handleSelectedMenu}
+        >
+          Filtros
+          {isOpen ? (
+            <Image
+              src={ExpandeMoreIcon}
+              width={25}
+              height={25}
+              alt="expand more"
+            />
+          ) : (
+            <Image
+              src={ExpandeLessIcon}
+              width={25}
+              height={25}
+              alt="expand less"
+            />
+          )}
+        </Button>
+      </Badge>
       <Menu
         id="filters-menu"
         anchorEl={anchorEl}
@@ -122,19 +133,33 @@ export const Filters: React.FC<IProps> = ({
             })}
           </Box>
 
-          <Grid container mt={5} columnSpacing={60}>
-            <Grid item>
-              <Button color="secondary" onClick={addFilter}>
+          <Box mt={5} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Box>
+              <Button
+                color="secondary"
+                sx={{ fontSize: 15, textTransform: 'none' }}
+                onClick={addFilter}
+              >
+                <Image src={AddIcon} width={20} height={20} alt="add icon" />{' '}
                 Adicionar Filtro
               </Button>
-            </Grid>
+            </Box>
 
-            <Grid item>
-              <Button color="warning" onClick={removeFilters}>
+            <Box>
+              <Button
+                sx={{ fontSize: 15, color: '#FF4747', textTransform: 'none' }}
+                onClick={removeFilters}
+              >
+                <Image
+                  src={RemoveIcon}
+                  width={20}
+                  height={20}
+                  alt="remove icon"
+                />{' '}
                 Remover todos
               </Button>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Grid>
       </Menu>
     </div>

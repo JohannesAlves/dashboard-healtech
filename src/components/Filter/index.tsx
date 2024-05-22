@@ -11,6 +11,10 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
+import CloseIcon from '@/assets/close-icon.svg';
+
+import Image from 'next/image';
+
 const operations = [
   {
     operator: 'contains',
@@ -108,7 +112,7 @@ const Filter: React.FC<IProps> = ({
       <Grid container direction="row" spacing={2} sx={{ alignItems: 'center' }}>
         <Grid item>
           <Button color="warning" onClick={onRemove}>
-            X
+            <Image src={CloseIcon} width={35} height={35} alt="close icon" />
           </Button>
         </Grid>
 
