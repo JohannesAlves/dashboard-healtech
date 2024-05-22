@@ -12,23 +12,27 @@ import MenuIcon from '@/assets/menu-icon.svg';
 import { IUsers } from '@/providers/dto/get-all-users-dto';
 import { StyledTableCell } from './styles';
 import React from 'react';
+import { IColumn } from '@/templates/ListUsers/types';
 
 interface IProps {
   users: IUsers[];
+  columns: IColumn[];
 }
 
-const UsersTable: React.FC<IProps> = ({ users }) => {
+const UsersTable: React.FC<IProps> = ({ users, columns = [] }) => {
   return (
     <TableContainer>
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>ID</StyledTableCell>
-            <StyledTableCell>Nome</StyledTableCell>
-            <StyledTableCell>Telefone</StyledTableCell>
-            <StyledTableCell>Data de cadastro</StyledTableCell>
-            <StyledTableCell align="center">Status</StyledTableCell>
-            <StyledTableCell></StyledTableCell>
+            {columns.map((column) => (
+              <StyledTableCell
+                key={column.field}
+                align={column.align || undefined}
+              >
+                {column.headerName}
+              </StyledTableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
