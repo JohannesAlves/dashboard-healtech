@@ -54,8 +54,8 @@ const Filter: React.FC<IProps> = ({
   const [selectedOperator, setSelectedOperator] = useState<{
     operator: string;
   }>({ operator: 'contains' });
-  const [searchParam, setSearchParam] = useState();
-  const [tempSearchParam, setTempSearchParam] = useState();
+  const [searchParam, setSearchParam] = useState('');
+  const [tempSearchParam, setTempSearchParam] = useState('');
   const delay = 500; // tempo de atraso em milissegundos
 
   const handleComparatorChange = (event: SelectChangeEvent<string>) => {

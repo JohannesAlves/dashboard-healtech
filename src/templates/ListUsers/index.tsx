@@ -105,12 +105,16 @@ const ListUsersTemplate = () => {
 
   const filterFunc = () => {
     const dataFiltered = selectedFilters.flatMap((selectedFilter) => {
-      const {
-        searchParam,
-        selectedColumn,
-        selectedComparator,
-        selectedOperator,
-      } = selectedFilter;
+      const { selectedColumn, selectedComparator, selectedOperator } =
+        selectedFilter;
+      let searchParam = selectedFilter.searchParam;
+
+      if (
+        selectedOperator.operator === 'is empty' ||
+        selectedOperator.operator === 'is not empty'
+      ) {
+        searchParam = 'value';
+      }
 
       if (
         !selectedColumn ||
@@ -123,6 +127,16 @@ const ListUsersTemplate = () => {
       const data = users?.filter((data) => {
         if (selectedOperator.operator === 'equal to')
           return data[selectedColumn.field] === searchParam;
+        if (selectedOperator.operator === 'contains')
+          return data[selectedColumn.field]?.includes(searchParam);
+        if (selectedOperator.operator === 'starts with')
+          return data[selectedColumn.field]?.startsWith(searchParam);
+        if (selectedOperator.operator === 'ends with')
+          return data[selectedColumn.field]?.endsWith(searchParam);
+        if (selectedOperator.operator === 'is empty')
+          return data[selectedColumn.field]?.length === 0;
+        if (selectedOperator.operator === 'is not empty')
+          return data[selectedColumn.field]?.length !== 0;
       });
 
       return data;
@@ -148,8 +162,6 @@ const ListUsersTemplate = () => {
     };
     fetchUsers();
   }, [orderBy]);
-
-  console.log(filteredData);
 
   return (
     <Grid sx={{ backgroundColor: 'white', minHeight: '100vh' }}>
