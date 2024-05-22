@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -103,45 +104,69 @@ const ListUsersTemplate = () => {
     }
   };
 
-  const filterFunc = () => {
-    const dataFiltered = selectedFilters.flatMap((selectedFilter) => {
-      const { selectedColumn, selectedComparator, selectedOperator } =
-        selectedFilter;
-      let searchParam = selectedFilter.searchParam;
+  // Função auxiliar para aplicar um único filtro ao conjunto de dados.
+  const applyFilter = (data: IUsers[], selectedFilter: ISelectedFilters) => {
+    const {
+      selectedColumn,
+      selectedOperator,
+      searchParam: initialSearchParam,
+    } = selectedFilter;
+    let searchParam = initialSearchParam;
 
-      if (
-        selectedOperator.operator === 'is empty' ||
-        selectedOperator.operator === 'is not empty'
-      ) {
-        searchParam = 'value';
-      }
+    if (
+      selectedOperator.operator === 'is empty' ||
+      selectedOperator.operator === 'is not empty'
+    ) {
+      searchParam = 'value';
+    }
 
-      if (
-        !selectedColumn ||
-        !searchParam ||
-        !selectedComparator ||
-        !selectedOperator
-      )
-        return users;
-
-      const data = users?.filter((data) => {
-        if (selectedOperator.operator === 'equal to')
-          return data[selectedColumn.field] === searchParam;
-        if (selectedOperator.operator === 'contains')
-          return data[selectedColumn.field]?.includes(searchParam);
-        if (selectedOperator.operator === 'starts with')
-          return data[selectedColumn.field]?.startsWith(searchParam);
-        if (selectedOperator.operator === 'ends with')
-          return data[selectedColumn.field]?.endsWith(searchParam);
-        if (selectedOperator.operator === 'is empty')
-          return data[selectedColumn.field]?.length === 0;
-        if (selectedOperator.operator === 'is not empty')
-          return data[selectedColumn.field]?.length !== 0;
-      });
-
+    if (!selectedColumn || !searchParam || !selectedOperator) {
       return data;
+    }
+
+    return data.filter((item) => {
+      const fieldValue = item[selectedColumn.field];
+      switch (selectedOperator.operator) {
+        case 'equal to':
+          return fieldValue === searchParam;
+        case 'contains':
+          return fieldValue?.includes(searchParam);
+        case 'starts with':
+          return fieldValue?.startsWith(searchParam);
+        case 'ends with':
+          return fieldValue?.endsWith(searchParam);
+        case 'is empty':
+          return fieldValue?.length === 0;
+        case 'is not empty':
+          return fieldValue?.length !== 0;
+        default:
+          return true;
+      }
+    });
+  };
+
+  const filterFunc = () => {
+    // Inicializamos o array para manter os dados filtrados.
+    let dataFiltered = users;
+
+    // Iteramos sobre todos os filtros selecionados.
+    selectedFilters.forEach((selectedFilter, index) => {
+      if (index === 0) {
+        // Para o primeiro filtro, aplicamos diretamente.
+        dataFiltered = applyFilter(dataFiltered, selectedFilter);
+      } else {
+        // Para filtros subsequentes, verificamos o selectedComparator.
+        if (selectedFilter.selectedComparator === 'and') {
+          // Se o operador for 'and', aplicamos o filtro ao conjunto de dados atual.
+          dataFiltered = applyFilter(dataFiltered, selectedFilter);
+        } else if (selectedFilter.selectedComparator === 'or') {
+          const orFilteredData = applyFilter(users, selectedFilter);
+          dataFiltered = [...[...dataFiltered, ...orFilteredData]];
+        }
+      }
     });
 
+    // Atualizamos os dados filtrados.
     setData(dataFiltered);
   };
 
