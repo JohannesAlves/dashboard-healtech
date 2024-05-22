@@ -92,6 +92,7 @@ const Filter: React.FC<IProps> = ({
     setSelectedFilters((prev: any) => {
       let temp = [...prev];
       temp[index] = {
+        index,
         selectedColumn,
         selectedComparator,
         selectedOperator,
@@ -141,7 +142,7 @@ const Filter: React.FC<IProps> = ({
               value={selectedColumn?.field || ''}
               onChange={handleColumnChange}
             >
-              {columns.map((column) => (
+              {columns.map((column, index) => (
                 <MenuItem value={column.field} key={column.field}>
                   {column.headerName}
                 </MenuItem>

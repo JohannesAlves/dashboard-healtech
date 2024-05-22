@@ -4,12 +4,13 @@ import { IColumn } from '@/templates/ListUsers/types';
 import { Button, Menu, Grid, Box } from '@mui/material';
 import React, { SetStateAction, useState } from 'react';
 import Filter from '../Filter';
+import { ISelectedFilters } from '@/templates/ListUsers';
 
 interface IProps {
   rows?: IUsers[];
   columns: IColumn[];
-  selectedFilters: any;
-  setSelectedFilters: any;
+  selectedFilters: ISelectedFilters[];
+  setSelectedFilters: React.Dispatch<SetStateAction<ISelectedFilters[]>>;
 }
 
 export const Filters: React.FC<IProps> = ({
@@ -31,13 +32,21 @@ export const Filters: React.FC<IProps> = ({
     setFilters([...filters, newFilter]);
   };
 
-  const removeOneFilterOnly = (id: string) => {
+  const removeOneFilterOnly = (id: string, index?: number) => {
     const newFilters = filters.filter((filter) => filter.id !== id);
+    const removedFilter = selectedFilters.filter(
+      (filter) => filter.index !== index
+    );
+    setSelectedFilters(removedFilter);
     setFilters(newFilters);
   };
 
+  console.log(selectedFilters);
+
   const removeFilters = () => {
+    setSelectedFilters([]);
     setFilters([{ id: '1', columns }]);
+    handeCloseMenu();
   };
 
   return (
@@ -74,7 +83,7 @@ export const Filters: React.FC<IProps> = ({
                   <Filter
                     index={index}
                     columns={filter.columns}
-                    key={filter.id}
+                    key={`first-${filter.id}`}
                     onRemove={() => removeOneFilterOnly(filter.id)}
                     marginLeft={filters.length > 1}
                     setSelectedFilters={setSelectedFilters}
@@ -86,8 +95,8 @@ export const Filters: React.FC<IProps> = ({
                     index={index}
                     hasComparator
                     columns={filter.columns}
-                    key={filter.id}
-                    onRemove={() => removeOneFilterOnly(filter.id)}
+                    key={`filter-${filter.id}`}
+                    onRemove={() => removeOneFilterOnly(filter.id, index)}
                     setSelectedFilters={setSelectedFilters}
                   />
                 );

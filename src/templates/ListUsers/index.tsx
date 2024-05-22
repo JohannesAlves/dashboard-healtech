@@ -53,7 +53,8 @@ const columns: IColumn[] = [
   },
 ];
 
-interface ISelectedFilters {
+export interface ISelectedFilters {
+  index: number;
   selectedColumn: {
     field: keyof IUsers;
     headerName: string;
