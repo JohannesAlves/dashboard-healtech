@@ -8,9 +8,15 @@ import Filter from '../Filter';
 interface IProps {
   rows?: IUsers[];
   columns: IColumn[];
+  selectedFilters: any;
+  setSelectedFilters: any;
 }
 
-export const Filters: React.FC<IProps> = ({ columns }) => {
+export const Filters: React.FC<IProps> = ({
+  columns,
+  selectedFilters,
+  setSelectedFilters,
+}) => {
   const [filters, setFilters] = useState<{ id: string; columns: IColumn[] }[]>([
     { id: '1', columns },
   ]);
@@ -33,8 +39,6 @@ export const Filters: React.FC<IProps> = ({ columns }) => {
   const removeFilters = () => {
     setFilters([{ id: '1', columns }]);
   };
-
-  console.log(filters);
 
   return (
     <div>
@@ -68,19 +72,23 @@ export const Filters: React.FC<IProps> = ({ columns }) => {
               if (index === 0) {
                 return (
                   <Filter
+                    index={index}
                     columns={filter.columns}
                     key={filter.id}
                     onRemove={() => removeOneFilterOnly(filter.id)}
                     marginLeft={filters.length > 1}
+                    setSelectedFilters={setSelectedFilters}
                   />
                 );
               } else {
                 return (
                   <Filter
+                    index={index}
                     hasComparator
                     columns={filter.columns}
                     key={filter.id}
                     onRemove={() => removeOneFilterOnly(filter.id)}
+                    setSelectedFilters={setSelectedFilters}
                   />
                 );
               }

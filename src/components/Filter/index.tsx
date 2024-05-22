@@ -9,7 +9,7 @@ import {
   MenuItem,
   TextField,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const operations = [
   {
@@ -37,6 +37,8 @@ interface IProps {
   onRemove?: () => void;
   hasComparator?: boolean;
   marginLeft?: boolean;
+  setSelectedFilters: any;
+  index: number;
 }
 
 const Filter: React.FC<IProps> = ({
@@ -44,6 +46,8 @@ const Filter: React.FC<IProps> = ({
   onRemove,
   hasComparator,
   marginLeft,
+  setSelectedFilters,
+  index,
 }) => {
   const [selectedComparator, setSelectedComparator] = useState('and');
   const [selectedColumn, setSelectedColumn] = useState<IColumn>();
@@ -51,6 +55,8 @@ const Filter: React.FC<IProps> = ({
     operator: string;
   }>({ operator: 'contains' });
   const [searchParam, setSearchParam] = useState();
+  const [tempSearchParam, setTempSearchParam] = useState();
+  const delay = 500; // tempo de atraso em milissegundos
 
   const handleComparatorChange = (event: SelectChangeEvent<string>) => {
     const selectedComparator = event.target.value;
@@ -68,8 +74,33 @@ const Filter: React.FC<IProps> = ({
   };
 
   const handleSearchParamChange = (event: React.ChangeEvent<any>) => {
-    setSearchParam(event.target.value);
+    setTempSearchParam(event.target.value);
   };
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchParam(tempSearchParam);
+    }, delay);
+
+    // Limpa o timeout se tempSearchParam mudar antes do timeout completar
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [tempSearchParam]);
+
+  useEffect(() => {
+    setSelectedFilters((prev: any) => {
+      let temp = [...prev];
+      temp[index] = {
+        selectedColumn,
+        selectedComparator,
+        selectedOperator,
+        searchParam,
+      };
+
+      return temp;
+    });
+  }, [selectedColumn, selectedComparator, selectedOperator, searchParam]);
 
   return (
     <Grid container direction="row" spacing={2} sx={{ alignItems: 'center' }}>
@@ -143,7 +174,7 @@ const Filter: React.FC<IProps> = ({
             <TextField
               id="search-param"
               label="Valor"
-              value={searchParam}
+              value={tempSearchParam}
               onChange={handleSearchParamChange}
             />
           </FormControl>

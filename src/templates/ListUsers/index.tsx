@@ -52,10 +52,17 @@ const columns: IColumn[] = [
   },
 ];
 
-interface IFilter {
-  column: IColumn;
-  operator: string;
-  value: string;
+interface ISelectedFilters {
+  selectedColumn: {
+    field: keyof IUsers;
+    headerName: string;
+    type: string;
+  };
+  selectedComparator: string;
+  selectedOperator: {
+    operator: string;
+  };
+  searchParam: string;
 }
 
 const ListUsersTemplate = () => {
@@ -70,9 +77,12 @@ const ListUsersTemplate = () => {
       );
     }
   );
+  const [users, setUsers] = useState<IUsers[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [orderBy, setOrderBy] = useState('id');
-  const [filters, setFilters] = useState<any[]>([]); // Estado para armazenar os filtros
+  const [selectedFilters, setSelectedFilters] = useState<ISelectedFilters[]>(
+    []
+  );
 
   const sortFunc = (a: IUsers, b: IUsers) => {
     switch (orderBy) {
@@ -93,18 +103,53 @@ const ListUsersTemplate = () => {
     }
   };
 
+  const filterFunc = () => {
+    const dataFiltered = selectedFilters.flatMap((selectedFilter) => {
+      const {
+        searchParam,
+        selectedColumn,
+        selectedComparator,
+        selectedOperator,
+      } = selectedFilter;
+
+      if (
+        !selectedColumn ||
+        !searchParam ||
+        !selectedComparator ||
+        !selectedOperator
+      )
+        return users;
+
+      const data = users?.filter((data) => {
+        if (selectedOperator.operator === 'equal to')
+          return data[selectedColumn.field] === searchParam;
+      });
+
+      return data;
+    });
+
+    setData(dataFiltered);
+  };
+
+  useEffect(() => {
+    filterFunc();
+  }, [selectedFilters]);
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const users = await getAllUsers();
         users.sort(sortFunc);
         setData(users);
+        setUsers(users);
       } catch (error) {
         console.error('Failed to fetch users:', error);
       }
     };
     fetchUsers();
   }, [orderBy]);
+
+  console.log(filteredData);
 
   return (
     <Grid sx={{ backgroundColor: 'white', minHeight: '100vh' }}>
@@ -124,7 +169,11 @@ const ListUsersTemplate = () => {
           />
 
           <OrderBy setValue={setOrderBy} value={orderBy} />
-          <Filters columns={columns} />
+          <Filters
+            columns={columns}
+            selectedFilters={selectedFilters}
+            setSelectedFilters={setSelectedFilters}
+          />
         </Box>
       </Box>
 
