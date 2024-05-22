@@ -8,6 +8,10 @@ import {
 } from '@mui/material';
 import React, { SetStateAction } from 'react';
 
+import Image from 'next/image';
+import ExpandeMoreIcon from '@/assets/expand_more.svg';
+import ExpandeLessIcon from '@/assets/expand_less.svg';
+
 interface IProps {
   value: string;
   setValue: React.Dispatch<SetStateAction<string>>;
@@ -59,6 +63,21 @@ export const OrderBy: React.FC<IProps> = ({ value, setValue }) => {
         onClick={handleSelectedMenu}
       >
         Ordenar por{' '}
+        {isOpen ? (
+          <Image
+            src={ExpandeMoreIcon}
+            width={25}
+            height={25}
+            alt="expand more"
+          />
+        ) : (
+          <Image
+            src={ExpandeLessIcon}
+            width={25}
+            height={25}
+            alt="expand less"
+          />
+        )}
       </Button>
       <Menu
         id="basic-menu"

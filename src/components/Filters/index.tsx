@@ -6,6 +6,11 @@ import React, { SetStateAction, useState } from 'react';
 import Filter from '../Filter';
 import { ISelectedFilters } from '@/templates/ListUsers';
 
+import ExpandeMoreIcon from '@/assets/expand_more.svg';
+import ExpandeLessIcon from '@/assets/expand_less.svg';
+
+import Image from 'next/image';
+
 interface IProps {
   rows?: IUsers[];
   columns: IColumn[];
@@ -41,8 +46,6 @@ export const Filters: React.FC<IProps> = ({
     setFilters(newFilters);
   };
 
-  console.log(selectedFilters);
-
   const removeFilters = () => {
     setSelectedFilters([]);
     setFilters([{ id: '1', columns }]);
@@ -63,7 +66,22 @@ export const Filters: React.FC<IProps> = ({
         aria-expanded={isOpen ? 'true' : undefined}
         onClick={handleSelectedMenu}
       >
-        Filtros
+        Filtros{' '}
+        {isOpen ? (
+          <Image
+            src={ExpandeMoreIcon}
+            width={25}
+            height={25}
+            alt="expand more"
+          />
+        ) : (
+          <Image
+            src={ExpandeLessIcon}
+            width={25}
+            height={25}
+            alt="expand less"
+          />
+        )}
       </Button>
       <Menu
         id="filters-menu"

@@ -9,9 +9,6 @@ import { getAllUsers } from '@/providers/useCases/get-all-users';
 import Navbar from '@/components/Navbar';
 import { Box, Grid, Typography } from '@mui/material';
 
-import ExpandeMoreIcon from '@/assets/expand_more.svg';
-import ExpandeLessIcon from '@/assets/expand_less.svg';
-
 import UsersTable from '@/components/UsersTable';
 import { SearchBar } from '@/components/SearchBar';
 import { useSearch } from '@/hooks/use-search';
