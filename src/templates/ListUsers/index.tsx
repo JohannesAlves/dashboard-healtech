@@ -15,6 +15,7 @@ import { useSearch } from '@/hooks/use-search';
 import { OrderBy } from '@/components/OrderBy';
 import { Filters } from '@/components/Filters';
 import { IColumn } from './types';
+import { putUser } from '@/providers/useCases/put-user';
 
 const columns: IColumn[] = [
   {
@@ -168,6 +169,20 @@ const ListUsersTemplate = () => {
     setData(dataFiltered);
   };
 
+  const handleUser = async (user: IUsers, status: 'Ativo' | 'Inativo') => {
+    try {
+      const userFormatted = {
+        ...user,
+        status,
+      };
+
+      const response = await putUser(userFormatted.id, userFormatted);
+      console.log(response);
+    } catch (error) {
+      return error;
+    }
+  };
+
   useEffect(() => {
     filterFunc();
   }, [selectedFilters]);
@@ -184,7 +199,7 @@ const ListUsersTemplate = () => {
       }
     };
     fetchUsers();
-  }, [orderBy]);
+  }, [orderBy, handleUser]);
 
   return (
     <Grid sx={{ backgroundColor: 'white', minHeight: '100vh' }}>
@@ -217,7 +232,11 @@ const ListUsersTemplate = () => {
           padding: 3,
         }}
       >
-        <UsersTable columns={columns} users={filteredData || []} />
+        <UsersTable
+          columns={columns}
+          users={filteredData || []}
+          handleUser={handleUser}
+        />
       </Box>
     </Grid>
   );
