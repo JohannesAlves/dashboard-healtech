@@ -11,8 +11,13 @@ _É NECESSÁRIO ESTAR COM YARN SERVER EM EXECUÇÃO PARA TESTAR O DEPLOY_
 Para a instalação e execução do projeto prossiga da seguinte forma:
 Utilizando os 3 comandos você irá conseguir subir o json-server, e iniciar o projeto.
 
+Instalação de dependências:
 ```bash
   yarn
+```
+
+Execução em dois terminais do projeto:
+```bash
   yarn server
   yarn dev
 ```
