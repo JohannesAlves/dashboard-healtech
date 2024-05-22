@@ -10,6 +10,14 @@ import {
 import Login from '.';
 import { AuthProvider, AuthContext } from '@/context/auth-context';
 
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      replace: () => null,
+    };
+  },
+}));
+
 describe('<Login />', () => {
   it('renders login form correctly', () => {
     const { getByLabelText, getByText } = render(<Login />);
@@ -22,6 +30,7 @@ describe('<Login />', () => {
     expect(getByLabelText('Email')).toBeInTheDocument();
     expect(getByLabelText('Senha')).toBeInTheDocument();
     expect(getByText('Esqueceu a sua senha?')).toBeInTheDocument();
+    expect(getByText('Acessar plataforma')).toBeInTheDocument();
     expect(getByText('Acessar plataforma')).toBeInTheDocument();
   });
 

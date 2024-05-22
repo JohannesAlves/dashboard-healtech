@@ -50,6 +50,7 @@ export default function Login() {
         type: 'custom',
         message: 'Email ou senha incorretos.',
       });
+      return;
     }
 
     return router.replace('/list-users');
