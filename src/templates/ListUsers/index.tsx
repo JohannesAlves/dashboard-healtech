@@ -1,3 +1,4 @@
+'use client';
 import useListUsersTemplate from './model';
 import ListUsersTemplateView from './view';
 
