@@ -1,0 +1,203 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+'use client';
+
+import { useEffect, useState } from 'react';
+
+import { IUsers } from '@/providers/dto/get-all-users-dto';
+import { getAllUsers } from '@/providers/useCases/get-all-users';
+
+import { useSearch } from '@/hooks/use-search';
+import { IColumn } from './types';
+import { putUser } from '@/providers/useCases/put-user';
+
+const columns: IColumn[] = [
+  {
+    field: 'id',
+    headerName: 'ID',
+    type: 'textField',
+  },
+  {
+    field: 'nome',
+    headerName: 'Nome',
+    type: 'textField',
+  },
+  {
+    field: 'telefone',
+    headerName: 'Telefone',
+    type: 'textField',
+  },
+  {
+    field: 'data_de_cadastro',
+    headerName: 'Data de cadastro',
+    type: 'date',
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    type: 'select',
+    align: 'center',
+  },
+  {
+    field: 'actions',
+    headerName: '',
+    type: '',
+  },
+];
+
+export interface ISelectedFilters {
+  index: number;
+  selectedColumn: {
+    field: keyof IUsers;
+    headerName: string;
+    type: string;
+  };
+  selectedComparator: string;
+  selectedOperator: {
+    operator: string;
+  };
+  searchParam: string;
+}
+
+const useListUsersTemplate = () => {
+  const { filteredData, setData, setTerm, term, inputRef } = useSearch<IUsers>((user, term) => {
+    if (!term) return true;
+
+    return (
+      user.id.toLowerCase().startsWith(term.toLowerCase()) ||
+      user.telefone?.toLowerCase().startsWith(term.toLowerCase()) ||
+      user.nome.toLowerCase().startsWith(term.toLowerCase())
+    );
+  });
+  const [users, setUsers] = useState<IUsers[]>([]);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [orderBy, setOrderBy] = useState('id');
+  const [userAction, setUserAction] = useState<IUsers | null>(null);
+  const [selectedFilters, setSelectedFilters] = useState<ISelectedFilters[]>([]);
+
+  const sortFunc = (a: IUsers, b: IUsers) => {
+    switch (orderBy) {
+      case 'id':
+        return Number(a.id) - Number(b.id);
+      case 'nome':
+        return a.nome.localeCompare(b.nome);
+      case 'status': // Ordenar por status (Ativo vem antes de Inativo)
+        if (a.status === 'Ativo' && b.status === 'Inativo') {
+          return -1;
+        } else if (a.status === 'Inativo' && b.status === 'Ativo') {
+          return 1;
+        } else {
+          return 0; // Mantém a ordem atual se ambos forem 'Ativo' ou 'Inativo'
+        }
+      default:
+        return Number(a.id) - Number(b.id);
+    }
+  };
+
+  // Função auxiliar para aplicar um único filtro ao conjunto de dados.
+  const applyFilter = (data: IUsers[], selectedFilter: ISelectedFilters) => {
+    const { selectedColumn, selectedOperator, searchParam: initialSearchParam } = selectedFilter;
+    let searchParam = initialSearchParam;
+
+    if (selectedOperator.operator === 'is empty' || selectedOperator.operator === 'is not empty') {
+      searchParam = 'value';
+    }
+
+    if (!selectedColumn || !searchParam || !selectedOperator) {
+      return data;
+    }
+
+    return data.filter((item) => {
+      const fieldValue = item[selectedColumn.field];
+      switch (selectedOperator.operator) {
+        case 'equal to':
+          return fieldValue === searchParam;
+        case 'contains':
+          return fieldValue?.includes(searchParam);
+        case 'starts with':
+          return fieldValue?.startsWith(searchParam);
+        case 'ends with':
+          return fieldValue?.endsWith(searchParam);
+        case 'is empty':
+          return fieldValue?.length === 0;
+        case 'is not empty':
+          return fieldValue?.length !== 0;
+        default:
+          return true;
+      }
+    });
+  };
+
+  const filterFunc = () => {
+    // Inicializamos o array para manter os dados filtrados.
+    let dataFiltered = users;
+
+    // Iteramos sobre todos os filtros selecionados.
+    selectedFilters.forEach((selectedFilter, index) => {
+      if (index === 0) {
+        // Para o primeiro filtro, aplicamos diretamente.
+        dataFiltered = applyFilter(dataFiltered, selectedFilter);
+      } else {
+        // Para filtros subsequentes, verificamos o selectedComparator.
+        if (selectedFilter.selectedComparator === 'and') {
+          // Se o operador for 'and', aplicamos o filtro ao conjunto de dados atual.
+          dataFiltered = applyFilter(dataFiltered, selectedFilter);
+        } else if (selectedFilter.selectedComparator === 'or') {
+          const orFilteredData = applyFilter(users, selectedFilter);
+          dataFiltered = [...[...dataFiltered, ...orFilteredData]];
+        }
+      }
+    });
+
+    // Atualizamos os dados filtrados.
+    setData(dataFiltered);
+  };
+
+  const handleUser = async (user: IUsers, status: 'Ativo' | 'Inativo') => {
+    try {
+      const userFormatted = {
+        ...user,
+        status,
+      };
+
+      const response = await putUser(userFormatted.id, userFormatted);
+      setUserAction(userFormatted); // Update state to trigger useEffect
+    } catch (error) {
+      return error;
+    }
+  };
+
+  useEffect(() => {
+    filterFunc();
+  }, [selectedFilters]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const users = await getAllUsers();
+        users.sort(sortFunc);
+        setData(users);
+        setUsers(users);
+      } catch (error) {
+        console.error('Failed to fetch users:', error);
+      }
+    };
+    fetchUsers();
+  }, [orderBy, userAction]);
+
+  return {
+    handleUser,
+    anchorEl,
+    setAnchorEl,
+    setTerm,
+    term,
+    inputRef,
+    columns,
+    setOrderBy,
+    orderBy,
+    selectedFilters,
+    setSelectedFilters,
+    filteredData,
+  };
+};
+
+export default useListUsersTemplate;
